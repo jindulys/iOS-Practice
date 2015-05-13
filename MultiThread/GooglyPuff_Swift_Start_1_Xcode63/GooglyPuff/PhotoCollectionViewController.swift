@@ -216,6 +216,16 @@ private extension PhotoCollectionViewController {
 
   func showOrHideNavPrompt() {
     // Implement me!
+    let delayInSeconds = 1.0
+    let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Double(NSEC_PER_SEC)))
+    dispatch_after(popTime, GlobalMainQueue) {
+      let count = PhotoManager.sharedManager.photos.count
+      if count > 0 {
+        self.navigationItem.prompt = nil
+      } else {
+        self.navigationItem.prompt = "Add photos with faces to Googlyify them!"
+      }
+    }
   }
 
   func downloadImageAssets() {

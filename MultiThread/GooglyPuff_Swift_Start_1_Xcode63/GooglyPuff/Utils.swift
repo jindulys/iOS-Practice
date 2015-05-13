@@ -13,6 +13,10 @@ let OverlyAttachedGirlfriendURLString = "http://i.imgur.com/UvqEgCv.png"
 let SuccessKidURLString = "http://i.imgur.com/dZ5wRtb.png"
 let LotsOfFacesURLString = "http://i.imgur.com/tPzTg7A.jpg"
 
+var GlobalMainQueue: dispatch_queue_t {
+  return dispatch_get_main_queue()
+}
+
 @objc class Utils {
   class var defaultBackgroundColor: UIColor {
     return UIColor(red: 236.0/255.0, green: 254.0/255.0, blue: 255.0/255.0, alpha: 1.0)
@@ -21,4 +25,6 @@ let LotsOfFacesURLString = "http://i.imgur.com/tPzTg7A.jpg"
   class var userInterfaceIdiomIsPad: Bool {
     return UIDevice.currentDevice().userInterfaceIdiom == UIUserInterfaceIdiom.Pad
   }
+  
+  
 }

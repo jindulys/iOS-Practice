@@ -29,9 +29,17 @@ class PhotoDetailViewController: UIViewController {
        image.size.width <= photoImageView.bounds.size.width {
       photoImageView.contentMode = .Center
     }
+    
+//    dispatch_async(dispatch_get_global_queue(Int(QOS_CLASS_USER_INITIATED.value), 0)){
+//      let overlayImage = self.faceOverlayImageFromImage(self.image)
+//      dispatch_async(dispatch_get_main_queue()) {
+//        self.fadeInNewImage(overlayImage)
+//      }
+//    }
+    
+    let overlayImage = self.faceOverlayImageFromImage(self.image)
+    self.fadeInNewImage(overlayImage)
 
-    let overlayImage = faceOverlayImageFromImage(image)
-    fadeInNewImage(overlayImage)
   }
 }
 
