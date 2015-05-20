@@ -38,22 +38,30 @@ class PhotoManager {
   }
 
   func downloadPhotosWithCompletion(completion: BatchPhotoDownloadingCompletionClosure?) {
-    var storedError: NSError?
-    for address in [OverlyAttachedGirlfriendURLString,
-                    SuccessKidURLString,
-                    LotsOfFacesURLString] {
-      let url = NSURL(string: address)
-      let photo = DownloadPhoto(url: url!) {
-        image, error in
-        if error != nil {
-          storedError = error
+    dispatch_async(GlobalUserInitiatedQueue) {
+      var storedError: NSError?
+      var downloadGroup = dispatch_group_create()
+      
+      for address in [OverlyAttachedGirlfriendURLString,
+                      SuccessKidURLString,
+                      LotsOfFacesURLString] {
+        let url = NSURL(string: address)
+        dispatch_group_enter(downloadGroup)
+        let photo = DownloadPhoto(url: url!) {
+          image, error in
+          if error != nil {
+            storedError = error
+          }
+          dispatch_group_leave(downloadGroup)
+        }
+        PhotoManager.sharedManager.addPhoto(photo)
+      }
+      dispatch_group_wait(downloadGroup, DISPATCH_TIME_FOREVER)
+      dispatch_async(GlobalMainQueue) {
+        if let completion = completion {
+          completion(error: storedError)
         }
       }
-      PhotoManager.sharedManager.addPhoto(photo)
-    }
-
-    if let completion = completion {
-      completion(error: storedError)
     }
   }
 
